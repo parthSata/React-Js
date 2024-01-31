@@ -6,18 +6,21 @@ function App() {
 
   let [counter, setCounter] = useState(0)
   const inceresedValue = () => {
-    counter = counter + 1
+    // counter = counter + 1
     // if (counter === 20) {
     //   alert('You have Exceeded the counter limit')
     // } else {
-      setCounter(counter +1)
+      setCounter(prevCounter => prevCounter + 1)
+      
     // }
   }
 
   const removeValue = () => {
-    counter = counter - 1
-    setCounter(counter)
+    // counter = counter - 1
+    setCounter(counter -1)
   }
+
+  console.log("counter:",counter)
   return (
     <>
       <h1>Hello Parth</h1>
