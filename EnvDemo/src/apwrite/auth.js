@@ -1,5 +1,6 @@
 import config from "../Config/config";
 import { Client, Account, ID } from "appwrite";
+
 export class AuthService {
     client = new Client()
     account;
@@ -8,8 +9,8 @@ export class AuthService {
         this.client
             .setEndpoint(config.appwriteUrl) // this is API Key 
             .setProject(config.appwriteProjectId) // Project id It was generated in appwrite
-            this.account = new Account(this.client)
-            console.log("url:", config.appwriteUrl)
+        this.account = new Account(this.client)
+        console.log("url:" , config.appwriteUrl)
     }
 
     async createAccount({ email, password, name }) {
@@ -26,7 +27,6 @@ export class AuthService {
         }
     }
 
-
     async login({ email, password }) {
         try {
             return await this.account.createEmailSession(email, password)
@@ -37,10 +37,12 @@ export class AuthService {
 
     async getCurrentUser() {
         try {
+            console.log("Account" , account)
             return await this.account.get();
         } catch (error) {
             console.log("Appwrite serive :: getCurrentUser :: error", error);
         }
+
         return null;
     }
 

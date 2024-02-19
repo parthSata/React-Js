@@ -6,13 +6,13 @@ import { logout } from '../../Store/AuthSlice'
 
 
 function LogOutBtn() {
+    const dispatch = useDispatch()
     const logoutHandler = () => {
         authService.logout()
             .then(() => {
                 dispatch(logout())
             })
     }
-    const dispatch = useDispatch()
     return (
         <div>
             <button

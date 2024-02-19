@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import databaseService from '../../appwrite/Database'
-import { Container, Postcard } from '../index'
+import databaseService from '../appwrite/Database'
+import { Container, Postcard } from '../Component/index'
 import { useNavigate, useParams } from 'react-router-dom'
+
 
 function Home() {
     const [post, setPost] = useState([])
