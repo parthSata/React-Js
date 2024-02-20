@@ -7,10 +7,9 @@ export class AuthService {
 
     constructor() {
         this.client
-            .setEndpoint(config.appwriteUrl) // this is API Key 
-            .setProject(config.appwriteProjectId) // Project id It was generated in appwrite
+            .setEndpoint(String(import.meta.env.VITE_APPWRITE_URL)) // this is API Key 
+            .setProject(String(import.meta.env.VITE_APPWRITE_PROJECT_ID)) // Project id It was generated in appwrite
         this.account = new Account(this.client)
-        console.log("url:" , config.appwriteUrl)
     }
 
     async createAccount({ email, password, name }) {
@@ -37,7 +36,6 @@ export class AuthService {
 
     async getCurrentUser() {
         try {
-            console.log("Account" , account)
             return await this.account.get();
         } catch (error) {
             console.log("Appwrite serive :: getCurrentUser :: error", error);

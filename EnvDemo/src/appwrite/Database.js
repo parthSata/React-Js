@@ -1,7 +1,5 @@
 import config from "../Config/config";
 import { Client, Databases, ID, Storage, Query } from "appwrite";
-export const API_ENDPOINT = 'https://cloud.appwrite.io/v1'
-export const PROJECT_ID = '65c62db97b3b2cdce437'
 export class DatabaseService {
     client = new Client()
     databases;
@@ -9,21 +7,26 @@ export class DatabaseService {
 
     constructor() {
         this.client
-            .setEndpoint(API_ENDPOINT) // this is API Key 
-            .setProject(PROJECT_ID) // Project id It was generated in appwrite
+            .setEndpoint(String(import.meta.env.VITE_APPWRITE_URL)) // this is API Key 
+            .setProject(String(import.meta.env.VITE_APPWRITE_PROJECT_ID)) // Project id It was generated in appwrite
         this.databases = new Databases(this.client);
         this.bucket = new Storage(this.client);
     }
 
     async createPost({ title, slug, content, featuredImage, status, userId }) {
         try {
+            
             return await this.databases.createDocument(
-                config.appwriteDatabaseId,
-                config.appwriteCollectionId,
+                String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
+                String(import.meta.env.VITE_APPWRITE_COLLECTION_ID),
+                // config.appwriteDatabaseId,
+                // config.appwriteCollectionId,
                 slug,
                 {
                     title, content, featuredImage, status, userId
-                }
+                },
+                console.log("content",content)
+
             )
         } catch (error) {
             console.log("Appwrite Service :: createPost :: error", error)
@@ -35,8 +38,8 @@ export class DatabaseService {
     async updatePost(slug, { title, content, featuredImage, status, userId }) {
         try {
             return await this.databases.updateDocument(
-                config.appwriteDatabaseId,
-                config.appwriteCollectionId,
+                String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
+                String(import.meta.env.VITE_APPWRITE_COLLECTION_ID),
                 slug,
                 {
                     title, content, featuredImage, status, userId
@@ -50,8 +53,8 @@ export class DatabaseService {
     async deletePost(slug) {
         try {
             await this.databases.deleteDocument(
-                config.appwriteDatabaseId,
-                config.appwriteCollectionId,
+                String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
+                String(import.meta.env.VITE_APPWRITE_COLLECTION_ID),
                 slug,
             )
             return true
@@ -64,8 +67,8 @@ export class DatabaseService {
     async getPost(slug) {
         try {
             return await this.databases.getDocument(
-                config.appwriteDatabaseId,
-                config.appwriteCollectionId,
+                String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
+                String(import.meta.env.VITE_APPWRITE_COLLECTION_ID),
                 slug,
             )
             return true
@@ -78,8 +81,8 @@ export class DatabaseService {
     // In Appwite databse Index is more important to Perform any query ex: index is like id(uniqueId)
     async getAllPosts(queries) {
         try {
-            config.appwriteDatabaseId,
-                config.appwriteCollectionId,
+            String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
+                String(import.meta.env.VITE_APPWRITE_COLLECTION_ID),
                 queries
                 [
                 Query.equal('status', 'active')
@@ -97,7 +100,7 @@ export class DatabaseService {
     async fileUpload(file) {
         try {
             return await this.bucket.createFile(
-                config.appwriteBucketId,
+                String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
                 ID.unique(),
                 file
             )
@@ -110,7 +113,7 @@ export class DatabaseService {
     async deleteFile(fileId) {
         try {
             await this.bucket.deleteFile(
-                config.appwriteBucketId,
+                String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
                 fileId
             )
             return true
@@ -122,7 +125,7 @@ export class DatabaseService {
 
     getFilePreview(fileId) {
         return this.bucket.getFilePreview(
-            config.appwriteBucketId,
+            String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
             fileId
         )
     }

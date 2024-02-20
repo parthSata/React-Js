@@ -1,15 +1,17 @@
 import config from "../Config/config";
 import { Client, Account, ID } from "appwrite";
+
 export class AuthService {
     client = new Client()
     account;
 
     constructor() {
+        console.log(import.meta.env.VITE_APPWRITE_URL)
         this.client
-            .setEndpoint(config.appwriteUrl) // this is API Key 
-            .setProject(config.appwriteProjectId) // Project id It was generated in appwrite
-            this.account = new Account(this.client)
-            console.log("url:", config.appwriteUrl)
+            .setEndpoint(String(import.meta.env.VITE_APPWRITE_URL)) // this is API Key 
+            .setProject(String(import.meta.env.VITE_APPWRITE_PROJECT_ID)) // Project id It was generated in appwrite
+        this.account = new Account(this.client)
+        console.log("url:" ,import.meta.env.VITE_APPWRITE_URL)
     }
 
     async createAccount({ email, password, name }) {
@@ -26,7 +28,6 @@ export class AuthService {
         }
     }
 
-
     async login({ email, password }) {
         try {
             return await this.account.createEmailSession(email, password)
@@ -41,6 +42,7 @@ export class AuthService {
         } catch (error) {
             console.log("Appwrite serive :: getCurrentUser :: error", error);
         }
+
         return null;
     }
 
