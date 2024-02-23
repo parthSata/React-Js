@@ -7,11 +7,11 @@ function Home() {
     useEffect(() => {
         databaseService.getAllPosts([]).then((posts) => {
             if (posts) {
-                setPost(posts.document)
+                setPost(posts.documents)
             }
         })
     }, [])
-    if (post.document === 0) {
+    if (post.documents === 0) {
         return (
             <div className="w-full py-8 mt-4 text-center">
                 <Container>
@@ -34,7 +34,8 @@ function Home() {
                 <div className='flex flex-wrap'>
                     {post.map((post) => (
                         <div key={post.$id} className='p-2 w-1/4'>
-                            <Postcard {...post} />  // spread use because get multiple post
+                            <Postcard {...post} /> 
+                              {/* spread use because get multiple post */}
                         </div>
                     ))}
                 </div>

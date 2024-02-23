@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Button, Input, Logo } from './index'
+import {Input, Logo } from './index'
 import { useDispatch } from 'react-redux'
 import  authService  from '../appwrite/Auth'
 import { useForm } from 'react-hook-form'
@@ -14,8 +14,11 @@ function Login() {
     const login = async (data) => {
         try {
             const Session = authService.login(data)
+            console.log("Session",Session)
             if (Session) {
                 const userData = await authService.getCurrentUser()
+                console.log("userData",userData)
+
                 if (userData) {
                     dispatch(authLogin(userData))
                     navigate('/')
@@ -67,7 +70,7 @@ function Login() {
                             label="Password: "
                             type="password"
                             placeholder="Enter your password"
-                            {...register("passwfffford",{
+                            {...register("password",{
                                 required:true
                             })}
                         />

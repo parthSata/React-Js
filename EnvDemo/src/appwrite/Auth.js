@@ -46,6 +46,7 @@ export class AuthService {
 
     async logout() {
         try {
+            console.log("object",this.account)
             return await this.account.deleteSessions() // This is for delete all Sessions
             // return this.account.deleteSession('current' || 'all') // This is for delete current/(All) Sessions
         } catch (error) {

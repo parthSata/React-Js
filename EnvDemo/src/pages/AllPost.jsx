@@ -7,9 +7,9 @@ function AllPost() {
     useEffect(() => {
         databaseService.getAllPosts([]).then((posts) => {
             if (posts) {
-                setPost(posts.document)
-                console.log("posts",posts)
+                setPost(posts.documents)
             }
+
         })
     }, [])
 
@@ -19,7 +19,7 @@ function AllPost() {
                 <div className="flex flex-wrap ">
                     {post.map((post) => (
                         <div key={post.$id} className='p-2 w-1/4'>
-                            <Postcard post={post} />
+                            <Postcard {...post} />
                         </div>
                     ))}
 

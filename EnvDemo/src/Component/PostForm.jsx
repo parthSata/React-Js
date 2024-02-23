@@ -17,16 +17,17 @@ function PostForm({ post }) {
     }) // Watch is Use for watch on any field
 
 
-    const userData = useSelector(state => state.auth.userData)
+    const userData = useSelector((state) => state.auth.userData)
+
     const submit = async (data) => {
         if (post) {
             const file = await data.image[0] ? databaseService.fileUpload(data.image[0]) : null
+
             if (file) {
                 databaseService.deleteFile(post.featuredImage)
             }
 
             const dbPost = await databaseService.updatePost(post.$id, { ...data, featuredImage: file ? file.$id : undefined })
-            console.log("dbpost",dbPost)
             if (dbPost) {
                 navigate(`/post/${dbPost.$id}`)
             }
@@ -71,7 +72,6 @@ function PostForm({ post }) {
     }, [watch, slugTransform, setValue])
 
 
-
     return (
         <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
             <div className="w-2/3 px-2">
@@ -103,7 +103,7 @@ function PostForm({ post }) {
                 {post && (
                     <div className="w-full mb-4">
                         <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
+                            src={databaseService.getFilePreview(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
                         />

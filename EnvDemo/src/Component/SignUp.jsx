@@ -21,7 +21,6 @@ function SignUp() {
                 const userData = await authService.getCurrentUser()
                 if (userData) dispatch(login(userData))
                 navigate("/")
-                console.log("userDatḁ",userDatḁ)
             }
         } catch (error) {
             setError(error.message)

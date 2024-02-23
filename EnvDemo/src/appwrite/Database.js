@@ -15,7 +15,7 @@ export class DatabaseService {
 
     async createPost({ title, slug, content, featuredImage, status, userId }) {
         try {
-            
+
             return await this.databases.createDocument(
                 String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
                 String(import.meta.env.VITE_APPWRITE_COLLECTION_ID),
@@ -25,8 +25,6 @@ export class DatabaseService {
                 {
                     title, content, featuredImage, status, userId
                 },
-                console.log("content",content)
-
             )
         } catch (error) {
             console.log("Appwrite Service :: createPost :: error", error)
@@ -71,23 +69,22 @@ export class DatabaseService {
                 String(import.meta.env.VITE_APPWRITE_COLLECTION_ID),
                 slug,
             )
-            return true
         } catch (error) {
             console.log("Appwrite Service :: getPost :: error", error)
             return false
         }
     }
 
+    
     // In Appwite databse Index is more important to Perform any query ex: index is like id(uniqueId)
-    async getAllPosts(queries) {
+    async getAllPosts(queries = [Query.equal("status", "active")]) {
         try {
-            String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
+            return await this.databases.listDocuments(
+                String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
                 String(import.meta.env.VITE_APPWRITE_COLLECTION_ID),
-                queries
-                [
-                Query.equal('status', 'active')
-                ]
-
+                queries,
+                console.log("queries", queries)
+            )
         } catch (error) {
             console.log("Appwrite Service :: getAllPosts :: error", error)
             return false
@@ -123,8 +120,9 @@ export class DatabaseService {
         }
     }
 
-    getFilePreview(fileId) {
-        return this.bucket.getFilePreview(
+     getFilePreview(fileId) {
+        console.log( "fileId", fileId)
+        return  this.bucket.getFilePreview(
             String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
             fileId
         )
