@@ -75,7 +75,7 @@ export class DatabaseService {
         }
     }
 
-    
+
     // In Appwite databse Index is more important to Perform any query ex: index is like id(uniqueId)
     async getAllPosts(queries = [Query.equal("status", "active")]) {
         try {
@@ -99,7 +99,8 @@ export class DatabaseService {
             return await this.bucket.createFile(
                 String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
                 ID.unique(),
-                file
+                file,
+                console.log("TCL: fileUpload -> file", file)
             )
         } catch (error) {
             console.log("Appwrite Service :: fileUpload :: error", error)
@@ -120,9 +121,8 @@ export class DatabaseService {
         }
     }
 
-     getFilePreview(fileId) {
-        console.log( "fileId", fileId)
-        return  this.bucket.getFilePreview(
+    getFilePreview(fileId){
+        return this.bucket.getFilePreview(
             String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
             fileId
         )

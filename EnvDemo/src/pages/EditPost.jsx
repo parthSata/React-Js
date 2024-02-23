@@ -10,12 +10,10 @@ function EditPost() {
 
     useEffect(() => {
         if (slug) {
-            console.log("slug",slug)
             databaseService.getPost(slug).then((post) => {
                 if (post) {
                     setPost(post)
                     
-                    console.log("post",post)
                 }
             })
         } else {
