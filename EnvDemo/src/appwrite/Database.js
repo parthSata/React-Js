@@ -82,8 +82,7 @@ export class DatabaseService {
             return await this.databases.listDocuments(
                 String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
                 String(import.meta.env.VITE_APPWRITE_COLLECTION_ID),
-                queries,
-                console.log("queries", queries)
+                queries
             )
         } catch (error) {
             console.log("Appwrite Service :: getAllPosts :: error", error)

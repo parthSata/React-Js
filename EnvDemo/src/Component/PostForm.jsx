@@ -6,8 +6,14 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 function PostForm({ post = null }) {
-  const [imageFile, setImageFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null)
   const navigate = useNavigate();
+
+  const handaleChange = (e) => {
+    setSelectedFile(e.currentTarget.files[0])
+  }
+
+
   const { handleSubmit, register, watch, setValue, control, getValues } =
     useForm({
       defaultValues: {
@@ -18,17 +24,26 @@ function PostForm({ post = null }) {
       },
     }); // Watch is Use for watch on any field
 
+  useEffect(() => {
+    setValue("title", post?.title || "");
+    setValue("slug", post?.slug || "");
+    setValue("content", post?.content || "");
+    setValue("status", post?.status || "active");
+  }, [post, setValue])
+
+
   const userData = useSelector((state) => state.auth.userData);
 
   const submit = async (data) => {
     if (post) {
-      const file = (await data.image[0])
-        ? databaseService.fileUpload(data.image[0])
-        : null;
+      // const file = (await data.image[0])
+      //   ? databaseService.fileUpload(data.image[0])
+      //   : null;
+      const file = selectedFile ? await databaseService.fileUpload(selectedFile) : null;
+
 
       if (file) {
         databaseService.deleteFile(post.featuredImage);
-        setImageFile(null);
       }
 
       const dbPost = await databaseService.updatePost(post.$id, {
@@ -44,7 +59,6 @@ function PostForm({ post = null }) {
       const file = await databaseService.fileUpload(data.image[0]);
 
       if (file) {
-        setImageFile(file);
         const fileId = file.$id;
         console.log("TCL: submit -> fileId", fileId);
         data.featuredImage = fileId;
@@ -126,7 +140,17 @@ function PostForm({ post = null }) {
             className="mb-4"
             accept="image/png, image/jpg, image/jpeg, image/gif"
             {...register("image", { required: !post })}
+            onChange={handaleChange}
           />
+          {selectedFile &&
+            <div className="w-full mb-4">
+              <img
+                src={URL.createObjectURL(selectedFile)}
+                alt={selectedFile.name}
+                className="rounded-lg"
+              />
+            </div>
+          }
           {post && (
             <div className="w-full mb-4">
               {post.featuredImage && (

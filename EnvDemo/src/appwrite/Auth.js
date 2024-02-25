@@ -7,7 +7,7 @@ export class AuthService {
 
     constructor() {
         this.client
-            .setEndpoint(String(import.meta.env.VITE_APPWRITE_URL)) // this is API Key 
+            .setEndpoint(config.appwriteUrl) // this is API Key 
             .setProject(String(import.meta.env.VITE_APPWRITE_PROJECT_ID)) // Project id It was generated in appwrite
         this.account = new Account(this.client)
     }
